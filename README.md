@@ -237,7 +237,3 @@ SQLite file: `database/logs.db` (created on first run).
 - dotenv for `.env`
 
 ---
-
-## License
-
-MIT.
