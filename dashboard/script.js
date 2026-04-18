@@ -13,7 +13,12 @@
  * ============================================================
  */
 
-const API_BASE = '';
+// ── API_BASE ─────────────────────────────────────────────────
+// For local development: leave as '' (same-origin, port 4000).
+// For production on Vercel: set to your Render firewall URL, e.g.:
+//   const API_BASE = 'https://your-firewall.onrender.com';
+const API_BASE = window.FIREWALL_API_BASE || '';
+
 const REFRESH_INTERVAL = 5000;
 
 let charts = {};

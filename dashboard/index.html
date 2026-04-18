@@ -309,6 +309,14 @@
         </div>
     </div>
 
+    <!-- ── Production config ──────────────────────────────────
+         Set FIREWALL_API_BASE to your Render firewall URL after deploying.
+         Leave empty string '' for local development (same-origin).
+         Example: window.FIREWALL_API_BASE = 'https://firewall-server.onrender.com';
+    ──────────────────────────────────────────────────────── -->
+    <script>
+        window.FIREWALL_API_BASE = '';  // ← UPDATE after deploying to Render
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

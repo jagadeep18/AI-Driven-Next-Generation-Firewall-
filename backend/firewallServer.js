@@ -48,8 +48,13 @@ const firewall = require('./firewallMiddleware');
 
 // ── Initialize Express app ──────────────────────────────────
 const app = express();
-const PORT = 4000;
-const APP_SERVER_URL = 'http://127.0.0.1:5000';
+const PORT = process.env.PORT || 4000;
+const APP_SERVER_URL = process.env.APP_SERVER_URL || 'http://127.0.0.1:5000';
+
+// Parse APP_SERVER_URL so direct proxy routes can use hostname + port
+const _appUrl = new URL(APP_SERVER_URL);
+const APP_HOST = _appUrl.hostname;
+const APP_PORT = parseInt(_appUrl.port, 10) || (_appUrl.protocol === 'https:' ? 443 : 80);
 
 // ── Database is initialized asynchronously in startServer() ──
 
@@ -330,8 +335,8 @@ app.all('/login', ...firewallChain, (req, res) => {
     // Forward to app server
     const http = require('http');
     const options = {
-        hostname: '127.0.0.1',
-        port: 5000,
+        hostname: APP_HOST,
+        port: APP_PORT,
         path: req.originalUrl,
         method: req.method,
         headers: req.headers
@@ -352,8 +357,8 @@ app.all('/login', ...firewallChain, (req, res) => {
 app.all('/admin', ...firewallChain, (req, res) => {
     const http = require('http');
     const options = {
-        hostname: '127.0.0.1',
-        port: 5000,
+        hostname: APP_HOST,
+        port: APP_PORT,
         path: req.originalUrl,
         method: req.method,
         headers: req.headers
@@ -371,8 +376,8 @@ app.all('/admin', ...firewallChain, (req, res) => {
 app.all('/api/data', ...firewallChain, (req, res) => {
     const http = require('http');
     const options = {
-        hostname: '127.0.0.1',
-        port: 5000,
+        hostname: APP_HOST,
+        port: APP_PORT,
         path: req.originalUrl,
         method: req.method,
         headers: req.headers
@@ -408,7 +413,7 @@ async function startServer() {
         console.log('╠══════════════════════════════════════════════════════╣');
         console.log(`║  Firewall Server:  http://0.0.0.0:${PORT}                ║`);
         console.log(`║  Dashboard:        http://localhost:${PORT}/dashboard     ║`);
-        console.log(`║  App Server:       http://127.0.0.1:5000             ║`);
+        console.log(`║  App Server:       ${APP_SERVER_URL.padEnd(34)}║`);
         console.log(`║  AI Engine:        ${aiMode.padEnd(37)}║`);
         console.log('╠══════════════════════════════════════════════════════╣');
         console.log('║  Pipeline: Blocked IP → Rate Limit → AI Engine → Logger → Proxy');

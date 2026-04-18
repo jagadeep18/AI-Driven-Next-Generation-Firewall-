@@ -1,0 +1,20 @@
+services:
+  # ── Service 1: Firewall Server ─────────────────────────────
+  - type: web
+    name: firewall-server
+    runtime: node
+    buildCommand: npm install
+    startCommand: node backend/firewallServer.js
+    envVars:
+      - key: APP_SERVER_URL
+        # Update this AFTER app-server is deployed and you have its URL
+        value: https://app-server.onrender.com
+      - key: OPENAI_API_KEY
+        sync: false        # Render will prompt you to enter this in the dashboard
+
+  # ── Service 2: Application Server ──────────────────────────
+  - type: web
+    name: app-server
+    runtime: node
+    buildCommand: npm install
+    startCommand: node app/appServer.js
