@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Trust Security Command Center - Login</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2358a6ff'><path d='M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-4z'/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 2rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .login-hero {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .login-hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .login-hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .hero-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hero-feature {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .hero-feature svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-green);
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .hero-feature-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .hero-feature-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .hero-feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .login-form-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-form-logo {
+            margin-bottom: 0.75rem;
+        }
+        .login-form-logo svg {
+            display: block;
+            margin: 0 auto;
+            color: var(--blue);
+        }
+
+        .login-form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-form-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .form-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .form-tab {
+            flex: 1;
+            padding: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-tab.active {
+            color: var(--accent-blue);
+        }
+
+        .form-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-blue);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: var(--input-bg-focus);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 2.4rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .toggle-password:hover {
+            color: var(--accent-blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <!-- Left Section: Hero -->
+            <div class="login-hero">
+                <h1 class="login-hero-title">Zero Trust Security Command Center</h1>
+                <p class="login-hero-desc">Zero Trust Engine, risk-based access, and adaptive security policy — all in real time.</p>
+                
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <div class="hero-feature-text">
+                            <div class="hero-feature-title">Zero Trust Engine</div>
+                            <div class="hero-feature-desc">Risk-based analysis with scoring and auto-response</div>
+                        </div>
+                    </div>
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <div class="hero-feature-text">
+                            <div class="hero-feature-title">Zero Trust Architecture</div>
+                            <div class="hero-feature-desc">Context-aware risk evaluation for every request</div>
+                        </div>
+                    </div>
+                    <div class="hero-feature">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        <div class="hero-feature-text">
+                            <div class="hero-feature-title">Threat Intelligence</div>
+                            <div class="hero-feature-desc">Integrated risk scoring and security analytics</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Section: Login Form -->
+            <div class="login-form-container">
+                <div class="login-form-header">
+                    <div class="login-form-logo"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                    <h2 class="login-form-title">Zero Trust Command Center</h2>
+                    <p class="login-form-subtitle">Authenticate to access the security dashboard</p>
+                </div>
+
+                <div class="form-tabs">
+                    <button class="form-tab active" data-form="login">Login</button>
+                    <button class="form-tab" data-form="register">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="form-content active">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="admin@firewall.local" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-field">
+                            <input type="password" class="form-input" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword(this)">Show</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 400;">
+                            <input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                            Remember me
+                        </label>
+                    </div>
+                    <button type="button" class="form-submit" onclick="handleLogin()">Sign In</button>
+                    <div class="form-footer">
+                        Forgot your password? <a href="#">Reset here</a>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="form-content">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" placeholder="John Administrator" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="admin@firewall.local" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="password-field">
+                            <input type="password" class="form-input" placeholder="Create a strong password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword(this)">👁</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="password-field">
+                            <input type="password" class="form-input" placeholder="Confirm your password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword(this)">Show</button>
+                        </div>
+                    </div>
+                    <button type="button" class="form-submit" onclick="handleRegister()">Create Account</button>
+                    <div class="form-footer">
+                        Already have an account? <a href="#" onclick="switchForm('login')">Sign in here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Switch between login and register forms
+        document.querySelectorAll('.form-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const formType = tab.dataset.form;
+                switchForm(formType);
+            });
+        });
+
+        function switchForm(formType) {
+            document.querySelectorAll('.form-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-content').forEach(f => f.classList.remove('active'));
+            
+            document.querySelector(`[data-form="${formType}"]`).classList.add('active');
+            document.getElementById(formType === 'login' ? 'loginForm' : 'registerForm').classList.add('active');
+        }
+
+        function togglePassword(btn) {
+            const input = btn.previousElementSibling;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            btn.textContent = isPassword ? 'Hide' : 'Show';
+        }
+
+        function handleLogin() {
+            const email = document.querySelector('#loginForm input[type="email"]').value;
+            if (email && email.includes('@')) {
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                window.location.href = 'index.html';
+            } else {
+                alert('Please enter a valid email address');
+            }
+        }
+
+        function handleRegister() {
+            const name = document.querySelector('#registerForm input[type="text"]').value;
+            const email = document.querySelector('#registerForm input[type="email"]').value;
+            if (name && email && email.includes('@')) {
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userName', name);
+                window.location.href = 'index.html';
+            } else {
+                alert('Please fill all fields with valid data');
+            }
+        }
+    </script>
+</body>
+</html>

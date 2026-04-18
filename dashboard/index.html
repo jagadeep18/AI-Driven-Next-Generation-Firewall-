@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero Trust Security Command Center</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2358a6ff'><path d='M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-4z'/></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="brand">
+                <div class="brand-icon"></div>
+                <div>
+                    <h1>Zero Trust Command Center</h1>
+                    <span class="brand-tagline">Zero Trust Engine | Real-Time Analytics</span>
+                </div>
+            </div>
+            <div class="topbar-actions">
+                <span class="status-pill" id="statusPill">
+                    <span class="status-dot"></span>
+                    ACTIVE
+                </span>
+                <button type="button" id="testModalBtn" class="btn-test" title="Run test commands">Test</button>
+                <button type="button" id="themeToggle" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <button type="button" id="logoutBtn" class="icon-btn" title="Logout" aria-label="Logout">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="overview">Overview</a>
+                <a href="#" class="nav-item" data-page="traffic">Traffic Logs</a>
+                <a href="#" class="nav-item" data-page="intrusion">Intrusion Logs</a>
+                <a href="#" class="nav-item" data-page="ai-threats">Threats</a>
+                <a href="#" class="nav-item" data-page="audit">Audit Logs</a>
+                <a href="#" class="nav-item" data-page="blocked">Blocked IPs</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- PAGE: OVERVIEW -->
+            <section id="page-overview" class="page active">
+                <div class="page-head">
+                    <h2>Overview</h2>
+                    <p>Zero Trust Engine | Risk Evaluation</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-value" id="totalRequests">0</span>
+                        <span class="stat-label">Total Requests</span>
+                        <span class="stat-trend" id="totalTrend">—</span>
+                    </div>
+                    <div class="stat-box stat-blocked">
+                        <span class="stat-value" id="blockedRequests">0</span>
+                        <span class="stat-label">Blocked</span>
+                        <span class="stat-trend" id="blockedTrend">—</span>
+                    </div>
+                    <div class="stat-box stat-intrusion">
+                        <span class="stat-value" id="intrusionAttempts">0</span>
+                        <span class="stat-label">Intrusions</span>
+                        <span class="stat-trend" id="intrusionTrend">—</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="blockedIPs">0</span>
+                        <span class="stat-label">Blocked IPs</span>
+                        <span class="stat-trend" id="ipsTrend">—</span>
+                    </div>
+                    <div class="stat-box stat-ai">
+                        <span class="stat-value" id="aiThreats">0</span>
+                        <span class="stat-label">Threats</span>
+                        <span class="stat-trend" id="aiThreatsTrend">—</span>
+                    </div>
+                    <div class="stat-box stat-risk">
+                        <span class="stat-value" id="avgRisk">0.00</span>
+                        <span class="stat-label">Avg Risk Score</span>
+                        <span class="stat-trend" id="avgRiskTrend">—</span>
+                    </div>
+                </div>
+
+                <div class="engine-bar">
+                    <div class="engine-info">
+                        <strong>Zero Trust Engine</strong>
+                        <span>Risk-based access | Adaptive security</span>
+                    </div>
+                    <div class="engine-badges">
+                        <span class="engine-badge active">Zero Trust</span>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h3>Analytics</h3>
+                    <p>Threat timeline | Attack distribution | High risk IPs</p>
+                </div>
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <h4>Traffic</h4>
+                        <div class="chart-wrap"><canvas id="trafficChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h4>Attack Types</h4>
+                        <div class="chart-wrap"><canvas id="attackChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="charts-row">
+                    <div class="chart-card chart-wide">
+                        <h4>Threat Timeline</h4>
+                        <div class="chart-wrap"><canvas id="riskTimelineChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="charts-row">
+                    <div class="chart-card chart-wide">
+                        <h4>Request Trends</h4>
+                        <div class="chart-wrap"><canvas id="trendsChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <h4>Severity</h4>
+                        <div class="chart-wrap"><canvas id="severityChart"></canvas></div>
+                    </div>
+                    <div class="chart-card">
+                        <h4>High Risk IPs</h4>
+                        <div class="chart-wrap"><canvas id="topAttackersChart"></canvas></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE: TRAFFIC LOGS (cards: click to expand detail + risk meter) -->
+            <section id="page-traffic" class="page">
+                <div class="page-head page-head-with-action">
+                    <div>
+                        <h2>Traffic Logs</h2>
+                        <p>Click a log to open details | Risk score and meter on each card</p>
+                    </div>
+                    <button type="button" class="btn-download-csv" id="csvTraffic" title="Download as CSV">Download CSV</button>
+                </div>
+                <div id="trafficLogCards" class="log-cards-container">
+                    <div class="empty-msg">Loading…</div>
+                </div>
+                <p class="log-cards-hint">Click any card to expand and see full details + risk meter.</p>
+            </section>
+
+            <!-- PAGE: INTRUSION LOGS -->
+            <section id="page-intrusion" class="page">
+                <div class="page-head page-head-with-action">
+                    <div>
+                        <h2>Intrusion Logs</h2>
+                        <p>Detected attack patterns and malicious requests</p>
+                    </div>
+                    <button type="button" class="btn-download-csv" id="csvIntrusion" title="Download as CSV">Download CSV</button>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IP</th>
+                                    <th>Attack Type</th>
+                                    <th>Endpoint</th>
+                                    <th>Severity</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="intrusionTable"><tr><td colspan="6" class="empty-msg">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE: AI THREATS -->
+            <section id="page-ai-threats" class="page">
+                <div class="page-head page-head-with-action">
+                    <div>
+                        <h2>Threat Intelligence</h2>
+                        <p>Requests flagged by Zero Trust engine (risk &gt; 0.3)</p>
+                    </div>
+                    <button type="button" class="btn-download-csv" id="csvThreats" title="Download as CSV">Download CSV</button>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IP</th>
+                                    <th>Endpoint</th>
+                                    <th>Action</th>
+                                    <th>Attack Type</th>
+                                    <th>Severity</th>
+                                    <th>Risk</th>
+                                    <th>Reason</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="aiThreatsTable"><tr><td colspan="9" class="empty-msg">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE: AUDIT LOGS -->
+            <section id="page-audit" class="page">
+                <div class="page-head page-head-with-action">
+                    <div>
+                        <h2>Audit Logs</h2>
+                        <p>System events and administrative actions</p>
+                    </div>
+                    <button type="button" class="btn-download-csv" id="csvAudit" title="Download as CSV">Download CSV</button>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Action</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditTable"><tr><td colspan="3" class="empty-msg">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE: BLOCKED IPs -->
+            <section id="page-blocked" class="page">
+                <div class="page-head page-head-with-action">
+                    <div>
+                        <h2>Blocked IPs</h2>
+                        <p>IP addresses blocked by the firewall. Use "Test block" to block your IP and see the 403 page; then use "Unblock my IP" on that page.</p>
+                    </div>
+                    <button type="button" class="btn-test-block" id="testBlockBtn" title="Block 127.0.0.1 to test IP blocking">Test block</button>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IP</th>
+                                    <th>Reason</th>
+                                    <th>Time</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="blockedTable"><tr><td colspan="5" class="empty-msg">Loading…</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>Zero Trust Security Command Center &copy; 2026 | Port 4000</p>
+    </footer>
+
+    <!-- Test commands modal -->
+    <div id="testModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>Test commands</h2>
+                <button type="button" class="modal-close" id="testModalClose" aria-label="Close">&times;</button>
+            </div>
+            <p class="modal-desc">Click <strong>Run</strong> to send the request through the firewall. Check Traffic Logs for the result. <strong>403 on attack tests = firewall blocked (expected).</strong></p>
+            <div class="modal-sections">
+                <section class="test-section">
+                    <h3>Low risk (expected ALLOW)</h3>
+                    <div id="testListLow" class="test-list"></div>
+                </section>
+                <section class="test-section">
+                    <h3>SQL injection</h3>
+                    <div id="testListSql" class="test-list"></div>
+                </section>
+                <section class="test-section">
+                    <h3>XSS (Cross-site scripting)</h3>
+                    <div id="testListXss" class="test-list"></div>
+                </section>
+                <section class="test-section">
+                    <h3>Command injection</h3>
+                    <div id="testListCmd" class="test-list"></div>
+                </section>
+                <section class="test-section">
+                    <h3>Path traversal / LFI</h3>
+                    <div id="testListPath" class="test-list"></div>
+                </section>
+                <section class="test-section">
+                    <h3>Other attacks</h3>
+                    <div id="testListOther" class="test-list"></div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

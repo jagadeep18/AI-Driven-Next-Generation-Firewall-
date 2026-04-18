@@ -1,0 +1,51 @@
+{
+    "malicious_ips": [
+        "192.168.100.50",
+        "10.0.0.99",
+        "172.16.0.66",
+        "45.33.32.156",
+        "185.220.101.1",
+        "23.129.64.100",
+        "104.244.72.115",
+        "198.96.155.3",
+        "209.141.33.45",
+        "171.25.193.20",
+        "91.219.237.1",
+        "176.10.99.200",
+        "51.15.43.205",
+        "162.247.74.27",
+        "199.249.230.163"
+    ],
+    "malicious_domains": [
+        "evil-hacker.com",
+        "malware-c2.net",
+        "phishing-portal.org",
+        "command-control.xyz",
+        "darkweb-proxy.io",
+        "credential-harvest.com",
+        "exploit-kit.net",
+        "ransomware-drop.org"
+    ],
+    "tor_exit_nodes": [
+        "185.220.101.1",
+        "23.129.64.100",
+        "104.244.72.115",
+        "171.25.193.20",
+        "176.10.99.200",
+        "162.247.74.27",
+        "199.249.230.163"
+    ],
+    "known_scanners": [
+        "198.96.155.3",
+        "209.141.33.45",
+        "45.33.32.156",
+        "91.219.237.1",
+        "51.15.43.205"
+    ],
+    "threat_feeds": [
+        { "name": "AbuseIPDB", "last_updated": "2026-03-08", "entries": 15 },
+        { "name": "AlienVault OTX", "last_updated": "2026-03-08", "entries": 8 },
+        { "name": "Tor Project Exit List", "last_updated": "2026-03-08", "entries": 7 },
+        { "name": "Shodan Scanner List", "last_updated": "2026-03-08", "entries": 5 }
+    ]
+}
